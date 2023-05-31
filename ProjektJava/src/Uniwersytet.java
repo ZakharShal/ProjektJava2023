@@ -23,34 +23,41 @@ class Uniwersytet {
     public void wyswietlWszystkichStudentow() {
         System.out.println("Lista studentów:");
         for (Student student : studenci) {
-            System.out.println(student.pobierzImie());
+            student.przedstawSie();
         }
-        System.out.println();
     }
 
     public void wyswietlWszystkichNauczycieli() {
         System.out.println("Lista nauczycieli:");
         for (Nauczyciel nauczyciel : nauczyciele) {
-            System.out.println(nauczyciel.pobierzImie());
+            nauczyciel.przedstawSie();
         }
-        System.out.println();
     }
 
     public Student znajdzStudentaPoImieniu(String imie) {
         for (Student student : studenci) {
-            if (student.pobierzImie().equals(imie)) {
+            if (student.getImie().equals(imie)) {
                 return student;
             }
         }
         return null;
     }
 
-    public Nauczyciel znajdzNauczycielaPoImieniu(String imie) {
-        for (Nauczyciel nauczyciel : nauczyciele) {
-            if (nauczyciel.pobierzImie().equals(imie)) {
-                return nauczyciel;
+    public void wyswietlSredniaOceneStudenta(String imie) {
+        Student student = znajdzStudentaPoImieniu(imie);
+        if (student != null) {
+            List<Integer> oceny = student.getOceny();
+            if (!oceny.isEmpty()) {
+                double srednia = oceny.stream()
+                        .mapToInt(Integer::intValue)
+                        .average()
+                        .orElse(0);
+                System.out.println("Średnia ocena studenta " + imie + ": " + srednia);
+            } else {
+                System.out.println("Student " + imie + " nie ma jeszcze żadnych ocen.");
             }
+        } else {
+            System.out.println("Nie znaleziono studenta o podanym imieniu.");
         }
-        return null;
     }
 }
